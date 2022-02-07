@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Mạng xã hội</string>
+    <string name="register">Đăng ký</string>
+    <string name="login">Đăng nhập</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="profile">Thông tin cá nhân</string>
+    <string name="already_have_account_login">Đã có tài khoản? Đăng nhập</string>
+    <string name="not_have_account_register">Chưa có tài khoản? Đăng ký</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="forgot_password">Quên mật khẩu?</string>
+    <string name="home">Trang chủ</string>
+    <string name="users">Tất cả người dùng</string>
+</resources>
