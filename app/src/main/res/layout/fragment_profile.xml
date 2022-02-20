@@ -20,7 +20,9 @@
                 android:id="@+id/coverIv"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                android:background="@color/primary_dark"></ImageView>
+                android:background="@color/primary_dark"
+                android:scaleType="fitXY"
+                ></ImageView>
 
             <!--avatar & info-->
             <LinearLayout
@@ -44,7 +46,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@color/profile_info_background">
                     <TextView
                         android:id="@+id/nameTv"
                         android:layout_width="match_parent"

@@ -11,4 +11,5 @@
     <color name="fragment_background">#F1EDED</color>
     <color name="primary_dark">#771e99</color>
     <color name="primary_lighter">#A032D2</color>
+    <color name="profile_info_background">#77000000</color>
 </resources>

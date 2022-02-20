@@ -101,28 +101,8 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            //sign in success
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            saveNewUser();
 
-                            //get user email and uid from auth
-                            String email = user.getEmail();
-                            String uid = user.getUid();
-                            //using HashMap to store user infor
-                            Map<Object,String> hashMap = new HashMap<>();
-                            hashMap.put("uid", uid);
-                            hashMap.put("email", email);
-                            hashMap.put("name", "");
-                            hashMap.put("phone", "");
-                            hashMap.put("image", "");
-
-                            //firebase database instance
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            //path to store user data named "User"
-                            DatabaseReference reference = database.getReference("User");
-                            //put data within hashmap in database
-                            reference.child(uid).setValue(hashMap);
-
-                            Toast.makeText(RegisterActivity.this, "Registered...\n" + user.getEmail(), Toast.LENGTH_LONG).show();
                             startActivity(new Intent(RegisterActivity.this, DashboardActivity.class));
                             finish();
                         } else {
@@ -137,6 +117,32 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "" + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    private void saveNewUser() {
+        //sign in success
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        //get user email and uid from auth
+        String email = user.getEmail();
+        String uid = user.getUid();
+        //using HashMap to store user infor
+        Map<Object,String> hashMap = new HashMap<>();
+        hashMap.put("uid", uid);
+        hashMap.put("email", email);
+        hashMap.put("name", "");
+        hashMap.put("phone", "");
+        hashMap.put("image", "");
+        hashMap.put("cover", "");
+
+        //firebase database instance
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //path to store user data named "User"
+        DatabaseReference reference = database.getReference("User");
+        //put data within hashmap in database
+        reference.child(uid).setValue(hashMap);
+
+        Toast.makeText(RegisterActivity.this, "Registered...\n" + user.getEmail(), Toast.LENGTH_LONG).show();
     }
 
     @Override
