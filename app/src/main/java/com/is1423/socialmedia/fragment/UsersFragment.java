@@ -26,15 +26,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.is1423.socialmedia.AdapterUsers;
-import com.is1423.socialmedia.DashboardActivity;
+import com.is1423.socialmedia.adapter.AdapterUsers;
 import com.is1423.socialmedia.MainActivity;
-import com.is1423.socialmedia.User;
+import com.is1423.socialmedia.domain.User;
 import com.is1423.socialmedia.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.

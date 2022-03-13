@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/fragment_background"
     tools:context=".fragment.ProfileFragment">
 
@@ -16,60 +16,63 @@
             android:layout_height="wrap_content">
 
             //cover photo
+
             <ImageView
                 android:id="@+id/coverIv"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:background="@color/primary_dark"
-                android:scaleType="fitXY"
-                ></ImageView>
+                android:scaleType="fitXY"></ImageView>
 
             <!--avatar & info-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="100dp">
+                android:layout_marginTop="100dp"
+                android:orientation="horizontal">
 
                 //avatar
+
                 <ImageView
                     android:id="@+id/avatarTv"
-                    android:layout_marginLeft="20dp"
-                    android:padding="5dp"
-                    android:background="@color/primary_dark"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:src="@drawable/ic_default_img_white"
-                    android:backgroundTint="@color/primary_lighter"/>
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/primary_dark"
+                    android:backgroundTint="@color/primary_lighter"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_default_img_white" />
 
                 //user info: name, email, phone number
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@color/profile_info_background">
+                    android:background="@color/profile_info_background"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/nameTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:layout_marginTop="5dp"
                         android:layout_marginLeft="5dp"
-                        android:textSize="25sp"/>
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="25sp" />
 
                     <TextView
                         android:id="@+id/emailTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:layout_marginLeft="5dp"/>
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/white" />
 
                     <TextView
                         android:id="@+id/phoneTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:layout_marginLeft= "5dp"/>
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/white" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -91,6 +94,6 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:src="@drawable/ic_edit"
-        app:backgroundTint="@color/primary_color"/>
+        app:backgroundTint="@color/primary_color" />
 
 </RelativeLayout>

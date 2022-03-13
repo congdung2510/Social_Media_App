@@ -12,4 +12,14 @@
     <color name="primary_dark">#771e99</color>
     <color name="primary_lighter">#A032D2</color>
     <color name="profile_info_background">#77000000</color>
+
+    <!--For activities containing toolbar-->
+    <!--Theme without ActionBar-->
+    <style name="AppThemeNo" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--Customize theme-->
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 </resources>

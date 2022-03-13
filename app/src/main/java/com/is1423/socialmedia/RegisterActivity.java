@@ -127,7 +127,7 @@ public class RegisterActivity extends AppCompatActivity {
         String email = user.getEmail();
         String uid = user.getUid();
         //using HashMap to store user infor
-        Map<Object,String> hashMap = new HashMap<>();
+        Map<Object, String> hashMap = new HashMap<>();
         hashMap.put("uid", uid);
         hashMap.put("email", email);
         hashMap.put("name", "");

@@ -474,7 +474,7 @@ public class ProfileFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         //get item id
         int id = item.getItemId();
-        if(id == R.id.action_logout){
+        if (id == R.id.action_logout) {
             firebaseAuth.signOut();
             checkUserStatus();
         }
@@ -484,9 +484,9 @@ public class ProfileFragment extends Fragment {
     private void checkUserStatus() {
         //get current user
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        if(user!=null){
+        if (user != null) {
             //user signed in => stay here
-        }else{
+        } else {
             //user not signed in, go main
             startActivity(new Intent(getActivity(), MainActivity.class));
             getActivity().finish();

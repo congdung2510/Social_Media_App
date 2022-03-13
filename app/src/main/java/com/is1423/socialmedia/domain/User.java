@@ -1,4 +1,4 @@
-package com.is1423.socialmedia;
+package com.is1423.socialmedia.domain;
 
 public class User {
     String name, email, phone, image, cover, uid;

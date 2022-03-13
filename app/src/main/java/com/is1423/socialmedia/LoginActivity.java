@@ -273,13 +273,13 @@ public class LoginActivity extends AppCompatActivity {
     private void saveNewUser(Task<AuthResult> task) {
         FirebaseUser user = mAuth.getCurrentUser();
         //if user sign in 1st time => get and show user info from google account
-        if(task.getResult().getAdditionalUserInfo().isNewUser()){
+        if (task.getResult().getAdditionalUserInfo().isNewUser()) {
             //get user email and uid from auth
             String email = user.getEmail();
             String uid = user.getUid();
 
             //using HashMap to store user info
-            Map<Object,String> hashMap = new HashMap<>();
+            Map<Object, String> hashMap = new HashMap<>();
             hashMap.put("uid", uid);
             hashMap.put("email", email);
             hashMap.put("name", "");
@@ -295,6 +295,6 @@ public class LoginActivity extends AppCompatActivity {
             reference.child(uid).setValue(hashMap);
         }
 
-        Toast.makeText(LoginActivity.this,"Welcome back " + user.getEmail(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(LoginActivity.this, "Welcome back " + user.getEmail(), Toast.LENGTH_SHORT).show();
     }
 }

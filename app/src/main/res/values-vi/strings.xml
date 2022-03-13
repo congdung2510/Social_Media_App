@@ -11,4 +11,7 @@
     <string name="forgot_password">Quên mật khẩu?</string>
     <string name="home">Trang chủ</string>
     <string name="users">Tất cả người dùng</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="message">Tin nhắn</string>
+    <string name="chat_list">Danh sách tin nhắn</string>
 </resources>
