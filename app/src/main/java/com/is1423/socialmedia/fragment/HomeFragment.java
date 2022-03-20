@@ -16,8 +16,15 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.is1423.socialmedia.MainActivity;
+import com.is1423.socialmedia.MessageActivity;
 import com.is1423.socialmedia.R;
+import com.is1423.socialmedia.common.Constant;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +33,7 @@ import com.is1423.socialmedia.R;
  */
 public class HomeFragment extends Fragment {
     FirebaseAuth firebaseAuth;
+    FirebaseUser fUser;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -37,6 +45,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         firebaseAuth = FirebaseAuth.getInstance();
+        fUser = firebaseAuth.getCurrentUser();
         return view;
     }
 
@@ -62,19 +71,26 @@ public class HomeFragment extends Fragment {
         if (id == R.id.action_logout) {
             firebaseAuth.signOut();
             checkUserStatus();
+            updateOnlineStatus(Constant.USER_STATUS.OFFLINE);
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void checkUserStatus() {
-        //get current user
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        if (user != null) {
+
+        if (fUser != null) {
             //user signed in => stay here
         } else {
             //user not signed in, go main
             startActivity(new Intent(getActivity(), MainActivity.class));
             getActivity().finish();
         }
+    }
+
+    private void updateOnlineStatus(String status) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constant.TABLE.USER).child(fUser.getUid());
+        Map<String, Object> map = new HashMap<>();
+        map.put(Constant.USER_TABLE_FIELD.ONLINE_STATUS, status);
+        reference.updateChildren(map);
     }
 }

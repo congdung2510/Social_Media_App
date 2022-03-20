@@ -33,6 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.is1423.socialmedia.common.Constant;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -204,6 +205,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
+                            updateOnlineStatus(Constant.USER_STATUS.ONLINE);
                             startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
                             finish();
                         } else {
@@ -280,21 +282,29 @@ public class LoginActivity extends AppCompatActivity {
 
             //using HashMap to store user info
             Map<Object, String> hashMap = new HashMap<>();
-            hashMap.put("uid", uid);
-            hashMap.put("email", email);
-            hashMap.put("name", "");
-            hashMap.put("phone", "");
-            hashMap.put("image", "");
-            hashMap.put("cover", "");
+            hashMap.put(Constant.USER_TABLE_FIELD.UID, uid);
+            hashMap.put(Constant.USER_TABLE_FIELD.EMAIL, email);
+            hashMap.put(Constant.USER_TABLE_FIELD.NAME, "");
+            hashMap.put(Constant.USER_TABLE_FIELD.ONLINE_STATUS, Constant.USER_STATUS.ONLINE);
+            hashMap.put(Constant.USER_TABLE_FIELD.PHONE, "");
+            hashMap.put(Constant.USER_TABLE_FIELD.IMAGE, "");
+            hashMap.put(Constant.USER_TABLE_FIELD.COVER, "");
 
             //firebase database instance
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             //path to store user data named "User"
-            DatabaseReference reference = database.getReference("User");
+            DatabaseReference reference = database.getReference(Constant.TABLE.USER);
             //put data within hashmap in database
             reference.child(uid).setValue(hashMap);
         }
-
+        updateOnlineStatus(Constant.USER_STATUS.ONLINE);
         Toast.makeText(LoginActivity.this, "Welcome back " + user.getEmail(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void updateOnlineStatus(String status) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constant.TABLE.USER).child(mAuth.getCurrentUser().getUid());
+        Map<String, Object> map = new HashMap<>();
+        map.put(Constant.USER_TABLE_FIELD.ONLINE_STATUS, status);
+        reference.updateChildren(map);
     }
 }

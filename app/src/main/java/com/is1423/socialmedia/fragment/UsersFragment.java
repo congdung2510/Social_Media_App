@@ -28,11 +28,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.is1423.socialmedia.adapter.AdapterUsers;
 import com.is1423.socialmedia.MainActivity;
+import com.is1423.socialmedia.common.Constant;
 import com.is1423.socialmedia.domain.User;
 import com.is1423.socialmedia.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +46,7 @@ public class UsersFragment extends Fragment {
     List<User> userList;
     //firebase auth
     FirebaseAuth firebaseAuth;
+    FirebaseUser fUser;
 
     public UsersFragment() {
         // Required empty public constructor
@@ -56,6 +60,7 @@ public class UsersFragment extends Fragment {
 
         //init
         firebaseAuth = FirebaseAuth.getInstance();
+        fUser = FirebaseAuth.getInstance().getCurrentUser();
 
         recyclerView = view.findViewById(R.id.user_recyclerView);
         //set properties
@@ -73,9 +78,9 @@ public class UsersFragment extends Fragment {
 
     private void getAllUsers() {
         //get current user
-        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        fUser = FirebaseAuth.getInstance().getCurrentUser();
         //get path of database named "User" containing users info
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constant.TABLE.USER);
         //get all data from path
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -104,9 +109,8 @@ public class UsersFragment extends Fragment {
 
     private void searchUsers(String s) {
         //get current user
-        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         //get path of database named "User" containing users info
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constant.TABLE.USER);
         //get all data from path
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -187,6 +191,7 @@ public class UsersFragment extends Fragment {
         if (id == R.id.action_logout) {
             firebaseAuth.signOut();
             checkUserStatus();
+            updateOnlineStatus(Constant.USER_STATUS.OFFLINE);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -201,5 +206,13 @@ public class UsersFragment extends Fragment {
             startActivity(new Intent(getActivity(), MainActivity.class));
             getActivity().finish();
         }
+    }
+
+    private void updateOnlineStatus(String status) {
+        String uid = fUser.getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constant.TABLE.USER).child(uid);
+        Map<String, Object> map = new HashMap<>();
+        map.put(Constant.USER_TABLE_FIELD.ONLINE_STATUS, status);
+        reference.updateChildren(map);
     }
 }

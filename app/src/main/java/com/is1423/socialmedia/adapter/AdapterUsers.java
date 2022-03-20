@@ -64,7 +64,7 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyHolder> {
                  * use UID to identify user*/
 
                 Intent intent = new Intent(context, MessageActivity.class);
-                intent.putExtra("uid", uid);
+                intent.putExtra("partnerUid", uid);
                 context.startActivity(intent);
             }
         });

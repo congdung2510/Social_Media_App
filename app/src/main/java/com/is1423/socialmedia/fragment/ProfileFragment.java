@@ -48,6 +48,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.is1423.socialmedia.MainActivity;
 import com.is1423.socialmedia.R;
+import com.is1423.socialmedia.common.Constant;
 import com.squareup.picasso.Picasso;
 
 import java.net.URI;
@@ -111,7 +112,7 @@ public class ProfileFragment extends Fragment {
         using orderByChild query => show detail from a node
         whose key named email and currently signed in email have same value
         It will search all nodes, where key matches => get detail */
-        Query query = databaseReference.orderByChild("email").equalTo(user.getEmail());
+        Query query = databaseReference.orderByChild(Constant.USER_TABLE_FIELD.EMAIL).equalTo(user.getEmail());
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -141,7 +142,7 @@ public class ProfileFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("User");
+        databaseReference = firebaseDatabase.getReference(Constant.TABLE.USER);
         storageReference = FirebaseStorage.getInstance().getReference();
     }
 
@@ -161,11 +162,11 @@ public class ProfileFragment extends Fragment {
 
     private void getCurrentUserInfo(DataSnapshot dataSnapshot) {
         //get data
-        String name = "" + dataSnapshot.child("name").getValue();
-        String email = "" + dataSnapshot.child("email").getValue();
-        String phone = "" + dataSnapshot.child("phone").getValue();
-        String image = "" + dataSnapshot.child("image").getValue();
-        String cover = "" + dataSnapshot.child("cover").getValue();
+        String name = "" + dataSnapshot.child(Constant.USER_TABLE_FIELD.NAME).getValue();
+        String email = "" + dataSnapshot.child(Constant.USER_TABLE_FIELD.EMAIL).getValue();
+        String phone = "" + dataSnapshot.child(Constant.USER_TABLE_FIELD.PHONE).getValue();
+        String image = "" + dataSnapshot.child(Constant.USER_TABLE_FIELD.IMAGE).getValue();
+        String cover = "" + dataSnapshot.child(Constant.USER_TABLE_FIELD.COVER).getValue();
 
         //set data
         nameTv.setText(name);
@@ -477,6 +478,7 @@ public class ProfileFragment extends Fragment {
         if (id == R.id.action_logout) {
             firebaseAuth.signOut();
             checkUserStatus();
+            updateOnlineStatus(Constant.USER_STATUS.OFFLINE);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -491,5 +493,12 @@ public class ProfileFragment extends Fragment {
             startActivity(new Intent(getActivity(), MainActivity.class));
             getActivity().finish();
         }
+    }
+
+    private void updateOnlineStatus(String status) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constant.TABLE.USER).child(user.getUid());
+        Map<String, Object> map = new HashMap<>();
+        map.put(Constant.USER_TABLE_FIELD.ONLINE_STATUS, status);
+        reference.updateChildren(map);
     }
 }
