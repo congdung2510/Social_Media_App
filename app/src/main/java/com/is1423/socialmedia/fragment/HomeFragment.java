@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.is1423.socialmedia.AddPostActivity;
 import com.is1423.socialmedia.MainActivity;
 import com.is1423.socialmedia.MessageActivity;
 import com.is1423.socialmedia.R;
@@ -72,6 +73,9 @@ public class HomeFragment extends Fragment {
             firebaseAuth.signOut();
             checkUserStatus();
             updateOnlineStatus(Constant.USER_STATUS.OFFLINE);
+        }
+        if (id == R.id.action_add_post) {
+            startActivity(new Intent(getActivity(), AddPostActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

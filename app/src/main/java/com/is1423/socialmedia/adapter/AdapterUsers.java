@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.is1423.socialmedia.MessageActivity;
 import com.is1423.socialmedia.R;
+import com.is1423.socialmedia.common.Constant;
 import com.is1423.socialmedia.domain.User;
 import com.squareup.picasso.Picasso;
 
@@ -64,7 +65,7 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyHolder> {
                  * use UID to identify user*/
 
                 Intent intent = new Intent(context, MessageActivity.class);
-                intent.putExtra("partnerUid", uid);
+                intent.putExtra(Constant.COMMON_KEY.PARTNER_UID_KEY, uid);
                 context.startActivity(intent);
             }
         });

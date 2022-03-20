@@ -1,64 +1,69 @@
-package com.is1423.socialmedia.fragment;
+package com.is1423.socialmedia;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.view.MenuItemCompat;
-import androidx.fragment.app.Fragment;
-
-import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.SearchView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.is1423.socialmedia.MainActivity;
-import com.is1423.socialmedia.R;
 import com.is1423.socialmedia.common.Constant;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MessageListFragment extends Fragment {
+public class AddPostActivity extends AppCompatActivity {
+    ActionBar actionBar;
     FirebaseAuth firebaseAuth;
     FirebaseUser currentUser;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_message_list, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_post);
+
+        actionBar = getSupportActionBar();
+        actionBar.setTitle("Add New Post");
+        //enable back button in actionBar
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
-        return view;
-    }
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true); //to show menu option in fragment
-        super.onCreate(savedInstanceState);
+        checkUserStatus();
     }
 
-    /*inflate options menu*/
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        //inflating menu
-        menuInflater.inflate(R.menu.menu_main, menu);
+    protected void onStart() {
+        super.onStart();
+        checkUserStatus();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkUserStatus();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         menu.findItem(R.id.action_add_post).setVisible(false);
-
-        super.onCreateOptionsMenu(menu, menuInflater);
+        return super.onCreateOptionsMenu(menu);
     }
 
-    /*handle menu item clicks*/
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         //get item id
@@ -78,8 +83,8 @@ public class MessageListFragment extends Fragment {
             //user signed in => stay here
         } else {
             //user not signed in, go main
-            startActivity(new Intent(getActivity(), MainActivity.class));
-            getActivity().finish();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
         }
     }
 

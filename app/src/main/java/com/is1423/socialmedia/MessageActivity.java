@@ -30,6 +30,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.is1423.socialmedia.adapter.AdapterMessage;
 import com.is1423.socialmedia.common.Constant;
 import com.is1423.socialmedia.domain.Message;
+import com.is1423.socialmedia.domain.User;
+import com.is1423.socialmedia.notifications.APIService;
+import com.is1423.socialmedia.notifications.Client;
+import com.is1423.socialmedia.notifications.Data;
+import com.is1423.socialmedia.notifications.Response;
+import com.is1423.socialmedia.notifications.Sender;
+import com.is1423.socialmedia.notifications.Token;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -39,6 +46,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class MessageActivity extends AppCompatActivity {
     //view from xml
@@ -65,6 +75,9 @@ public class MessageActivity extends AppCompatActivity {
     String currentUserUid;
     String partnerImg;
 
+    APIService apiService;
+    boolean notify = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,10 +92,12 @@ public class MessageActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        apiService = Client.getRetrofit(Constant.FCM.URL).create(APIService.class);
+
         /*using intent to pass user's uid
          * from uid => get profile picture, name and start chatting*/
         Intent intent = getIntent();
-        partnerUid = intent.getStringExtra("partnerUid");
+        partnerUid = intent.getStringExtra(Constant.COMMON_KEY.PARTNER_UID_KEY);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -98,7 +113,7 @@ public class MessageActivity extends AppCompatActivity {
                     String name = ds.child(Constant.USER_TABLE_FIELD.NAME).getValue() + "";
                     partnerImg = ds.child(Constant.USER_TABLE_FIELD.IMAGE).getValue() + "";
 
-                    if (Objects.nonNull(ds.child(Constant.USER_TABLE_FIELD.ONLINE_STATUS).getValue())){
+                    if (Objects.nonNull(ds.child(Constant.USER_TABLE_FIELD.ONLINE_STATUS).getValue())) {
                         String onlineStatus = "" + ds.child(Constant.USER_TABLE_FIELD.ONLINE_STATUS).getValue();
                         userStatusTv.setText(onlineStatus);
                     }
@@ -121,6 +136,7 @@ public class MessageActivity extends AppCompatActivity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                notify = true;
                 //get text from edit text
                 String message = messageEt.getText().toString().trim();
                 if (TextUtils.isEmpty(message)) {
@@ -128,6 +144,7 @@ public class MessageActivity extends AppCompatActivity {
                 } else {
                     sendMessage(message);
                 }
+                messageEt.setText("");
             }
         });
 
@@ -197,7 +214,55 @@ public class MessageActivity extends AppCompatActivity {
         hashMap.put(Constant.MESSAGE_TABLE_FIELD.IS_SEEN, false);
         reference.child(Constant.TABLE.MESSAGE).push().setValue(hashMap);
 
-        messageEt.setText("");
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference(Constant.TABLE.USER).child(currentUserUid);
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if (notify) {
+                    sendNotification(partnerUid, user.getName(), message);
+                }
+                notify = false;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void sendNotification(String partnerUid, String name, String message) {
+        DatabaseReference allTokens = FirebaseDatabase.getInstance().getReference(Constant.TABLE.TOKEN);
+        Query query = allTokens.orderByKey().equalTo(partnerUid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Token token = ds.getValue(Token.class);
+                    Data data = new Data(currentUserUid, name + ":" + message, getString(R.string.new_message), partnerUid, R.drawable.ic_default_img_primary);
+                    Sender sender = new Sender(data, token.getToken());
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<Response>() {
+                                @Override
+                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                    Toast.makeText(MessageActivity.this, "" + response.message(), Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<Response> call, Throwable t) {
+
+                                }
+                            });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void initView() {

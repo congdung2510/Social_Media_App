@@ -46,6 +46,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.is1423.socialmedia.AddPostActivity;
 import com.is1423.socialmedia.MainActivity;
 import com.is1423.socialmedia.R;
 import com.is1423.socialmedia.common.Constant;
@@ -479,6 +480,9 @@ public class ProfileFragment extends Fragment {
             firebaseAuth.signOut();
             checkUserStatus();
             updateOnlineStatus(Constant.USER_STATUS.OFFLINE);
+        }
+        if (id == R.id.action_add_post) {
+            startActivity(new Intent(getActivity(), AddPostActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

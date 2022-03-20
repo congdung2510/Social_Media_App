@@ -9,6 +9,7 @@ public class Constant {
     public static final class TABLE{
         public static final String USER = "User";
         public static final String MESSAGE = "Message";
+        public static final String TOKEN = "Token";
     }
 
     public static final class USER_STATUS{
@@ -36,5 +37,23 @@ public class Constant {
         public static final String PHONE = "phone";
         public static final String IMAGE = "image";
         public static final String COVER = "cover";
+    }
+
+    public static final class COMMON_KEY {
+        public static final String SHARED_PREFERENCES_SP_USER_NAME = "SP_USER";
+        public static final String SHARED_PREFERENCES_CURRENT_USERID_KEY = "Current_USERID";
+        public static final String PARTNER_UID_KEY = "partnerUid";
+    }
+
+    public static final class REMOTE_MESSAGE {
+        public static final String SENT = "sent";
+        public static final String USER = "user";
+        public static final String ICON = "icon";
+        public static final String TITLE = "title";
+        public static final String BODY = "body";
+    }
+
+    public static final class FCM {
+        public static final String URL = "https://fcm.googleapis.com/";
     }
 }
