@@ -18,4 +18,7 @@
     <string name="start_typing" translatable="false">Start typing</string>
     <string name="new_message">New message</string>
     <string name="add_post">Add Post</string>
+    <string name="enter_title">Enter title</string>
+    <string name="enter_description">Enter description</string>
+    <string name="post">Post</string>
 </resources>

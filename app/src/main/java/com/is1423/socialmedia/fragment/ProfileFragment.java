@@ -78,11 +78,6 @@ public class ProfileFragment extends Fragment {
     FloatingActionButton floatingActionButton;
 
     ProgressDialog pd;
-    //permissions constants
-    private static final int CAMERA_REQUEST_CODE = 100;
-    private static final int STORAGE_REQUEST_CODE = 200;
-    private static final int IMAGE_PICK_GALLERY_CODE = 300;
-    private static final int IMAGE_PICK_CAMERA_CODE = 400;
 
     //arrays of permissions to be requested
     String cameraPermissions[];
@@ -227,7 +222,7 @@ public class ProfileFragment extends Fragment {
 
     private void showImagePicDialog() {
         //dialog containing options: Camera/Gallery
-        String options[] = {"Camera", "Gallery"};
+        String options[] = {Constant.IMAGE_SOURCE_OPTIONS.CAMERA, Constant.IMAGE_SOURCE_OPTIONS.GALLERY};
         //alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         //set title
@@ -324,7 +319,7 @@ public class ProfileFragment extends Fragment {
 
     private void requestStoragePermission() {
         //request runtime storage permission
-        requestPermissions(storagePermissions, STORAGE_REQUEST_CODE);
+        requestPermissions(storagePermissions, Constant.REQUEST_CODE.STORAGE_REQUEST_CODE);
     }
 
     private boolean checkCameraPermission() {
@@ -340,14 +335,14 @@ public class ProfileFragment extends Fragment {
 
     private void requestCameraPermission() {
         //request runtime storage permission
-        requestPermissions(cameraPermissions, CAMERA_REQUEST_CODE);
+        requestPermissions(cameraPermissions, Constant.REQUEST_CODE.CAMERA_REQUEST_CODE);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         //when user press Allow or Deny from permission request dialog
         switch (requestCode) {
-            case CAMERA_REQUEST_CODE: {
+            case Constant.REQUEST_CODE.CAMERA_REQUEST_CODE: {
                 if (grantResults.length > 0) {
                     boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     boolean writeStorageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
@@ -360,7 +355,7 @@ public class ProfileFragment extends Fragment {
             }
             break;
 
-            case STORAGE_REQUEST_CODE: {
+            case Constant.REQUEST_CODE.STORAGE_REQUEST_CODE: {
                 if (grantResults.length > 0) {
                     boolean writeStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     if (writeStorageAccepted) {
@@ -385,25 +380,25 @@ public class ProfileFragment extends Fragment {
         //intent to start camera
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
-        startActivityForResult(cameraIntent, IMAGE_PICK_CAMERA_CODE);
+        startActivityForResult(cameraIntent, Constant.REQUEST_CODE.IMAGE_PICK_CAMERA_CODE);
     }
 
     private void pickFromGallery() {
         //pick from gallery
         Intent galleryIntent = new Intent(Intent.ACTION_PICK);
         galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent, IMAGE_PICK_GALLERY_CODE);
+        startActivityForResult(galleryIntent, Constant.REQUEST_CODE.IMAGE_PICK_GALLERY_CODE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         //called after picking image
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == IMAGE_PICK_GALLERY_CODE) {
+            if (requestCode == Constant.REQUEST_CODE.IMAGE_PICK_GALLERY_CODE) {
                 image_uri = data.getData();
                 uploadProfileCoverPhoto(image_uri);
             }
-            if (requestCode == IMAGE_PICK_CAMERA_CODE) {
+            if (requestCode == Constant.REQUEST_CODE.IMAGE_PICK_CAMERA_CODE) {
                 uploadProfileCoverPhoto(image_uri);
             }
         }
