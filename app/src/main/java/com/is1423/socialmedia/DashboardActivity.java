@@ -171,6 +171,7 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         checkUserStatus();
+        updateOnlineStatus(Constant.USER_STATUS.ONLINE);
         super.onStart();
     }
 }

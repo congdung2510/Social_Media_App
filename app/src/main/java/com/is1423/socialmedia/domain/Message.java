@@ -3,19 +3,20 @@ package com.is1423.socialmedia.domain;
 import java.time.Instant;
 
 public class Message {
-    String message, receiver, sender;
+    String message, receiver, sender, type;
     String sendDatetime;
     boolean isSeen;
 
     public Message() {
     }
 
-    public Message(String message, String receiver, String sender, String sendDatetime, boolean isSeen) {
+    public Message(String message, String receiver, String sender, String sendDatetime, boolean isSeen, String type) {
         this.message = message;
         this.receiver = receiver;
         this.sender = sender;
         this.sendDatetime = sendDatetime;
         this.isSeen = isSeen;
+        this.type = type;
     }
 
     public String getMessage() {
@@ -56,5 +57,13 @@ public class Message {
 
     public void setSeen(boolean seen) {
         isSeen = seen;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

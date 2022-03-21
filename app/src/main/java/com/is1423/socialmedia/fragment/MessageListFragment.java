@@ -51,7 +51,7 @@ public class MessageListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_message_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_message_list, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
@@ -60,7 +60,7 @@ public class MessageListFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 messageLists.clear();
-                for (DataSnapshot ds:snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     MessageList messageList = ds.getValue(MessageList.class);
                     messageLists.add(messageList);
                 }
@@ -75,69 +75,6 @@ public class MessageListFragment extends Fragment {
         messageListRecyclerView = view.findViewById(R.id.message_list_recycler_view);
         messageLists = new ArrayList<>();
         return view;
-    }
-
-    private void loadChats() {
-        userList = new ArrayList<>();
-        databaseReference = FirebaseDatabase.getInstance().getReference(Constant.TABLE.USER);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userList.clear();
-                for(DataSnapshot ds: snapshot.getChildren()){
-                    User user = ds.getValue(User.class);
-                    for(MessageList messageList: messageLists){
-                        if(Objects.nonNull(user.getUid())&&user.getUid().equals(messageList.getId())){
-                            userList.add(user);
-                            break;
-                        }
-                    }
-                    adapterMessageList = new AdapterMessageList(getContext(), userList);
-                    messageListRecyclerView.setAdapter(adapterMessageList);
-                    for (int i = 0; i < userList.size(); i++) {
-                        getLastMassage(userList.get(i).getUid());
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void getLastMassage(String userId) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constant.TABLE.MESSAGE);
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String lastMessage = "default";
-                for (DataSnapshot ds: snapshot.getChildren()
-                     ) {
-                    Message message = ds.getValue(Message.class);
-                    if(Objects.isNull(message)){
-                        continue;
-                    }
-                    String sender = message.getSender();
-                    String receiver = message.getReceiver();
-                    if(Objects.isNull(sender)||Objects.isNull(receiver)){
-                        continue;
-                    }
-                    if(receiver.equals(currentUser.getUid())&&sender.equals(userId)||
-                            receiver.equals(userId)&&sender.equals(currentUser.getUid())){
-                        lastMessage = message.getMessage();
-                    }
-                }
-                adapterMessageList.setLastMessageMap(userId, lastMessage);
-                adapterMessageList.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     @Override
@@ -168,6 +105,73 @@ public class MessageListFragment extends Fragment {
             updateOnlineStatus(Constant.USER_STATUS.OFFLINE);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void loadChats() {
+        userList = new ArrayList<>();
+        databaseReference = FirebaseDatabase.getInstance().getReference(Constant.TABLE.USER);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userList.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    User user = ds.getValue(User.class);
+                    for (MessageList messageList : messageLists) {
+                        if (Objects.nonNull(user.getUid()) && user.getUid().equals(messageList.getId())) {
+                            userList.add(user);
+                            break;
+                        }
+                    }
+                    adapterMessageList = new AdapterMessageList(getContext(), userList);
+                    messageListRecyclerView.setAdapter(adapterMessageList);
+                    for (int i = 0; i < userList.size(); i++) {
+                        getLastMassage(userList.get(i).getUid());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void getLastMassage(String userId) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constant.TABLE.MESSAGE);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String lastMessage = "default";
+                for (DataSnapshot ds : snapshot.getChildren()
+                ) {
+                    Message message = ds.getValue(Message.class);
+                    if (Objects.isNull(message)) {
+                        continue;
+                    }
+                    String sender = message.getSender();
+                    String receiver = message.getReceiver();
+                    if (Objects.isNull(sender) || Objects.isNull(receiver)) {
+                        continue;
+                    }
+                    if (receiver.equals(currentUser.getUid()) && sender.equals(userId) ||
+                            receiver.equals(userId) && sender.equals(currentUser.getUid())) {
+                        if (message.getType().equals(Constant.MESSAGE_TYPE.IMAGE)) {
+                            lastMessage = "Sent a photo";
+                        } else {
+                            lastMessage = message.getMessage();
+                        }
+                    }
+                }
+                adapterMessageList.setLastMessageMap(userId, lastMessage);
+                adapterMessageList.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void checkUserStatus() {

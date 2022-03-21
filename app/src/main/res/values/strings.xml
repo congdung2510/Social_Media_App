@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SocialMedia</string>
+    <string name="app_name">ChatApp</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="email">Email</string>

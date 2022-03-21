@@ -65,6 +65,8 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.MyHolder
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         String message = messageList.get(position).getMessage();
+        String type = messageList.get(position).getType();
+
         if(Objects.nonNull(messageList.get(position).getSendDatetime())){
             String time = messageList.get(position).getSendDatetime();
 
@@ -73,9 +75,18 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.MyHolder
             String sendDatetime = DateFormat.format("dd/MM/yyyy hh:mm aa", cal).toString();
             holder.timeTv.setText(sendDatetime);
         }
-
-        //set data
         holder.messageTv.setText(message);
+        if(type.equals(Constant.MESSAGE_TYPE.TEXT)){
+            holder.messageTv.setVisibility(View.VISIBLE);
+            holder.messageIv.setVisibility(View.GONE);
+
+            holder.messageTv.setText(message);
+        }else {
+            holder.messageTv.setVisibility(View.GONE);
+            holder.messageIv.setVisibility(View.VISIBLE);
+
+            Picasso.get().load(message).placeholder(R.drawable.ic_image_black).into(holder.messageIv);
+        }
         try {
             Picasso.get().load(imageUrl).into(holder.profileIv);
         } catch (Exception e) {
@@ -164,7 +175,7 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.MyHolder
     //view holder class
     class MyHolder extends RecyclerView.ViewHolder {
         //view
-        ImageView profileIv;
+        ImageView profileIv, messageIv;
         TextView messageTv, timeTv, isSeenTv;
         LinearLayout messageLayout; //for click listener to show delete
 
@@ -180,6 +191,7 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.MyHolder
             timeTv = itemView.findViewById(R.id.timeTv);
             isSeenTv = itemView.findViewById(R.id.isSeenTv);
             messageLayout = itemView.findViewById(R.id.messageLayout);
+            messageIv = itemView.findViewById(R.id.messageIv);
         }
     }
 }

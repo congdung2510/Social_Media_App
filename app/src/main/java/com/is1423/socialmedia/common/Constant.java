@@ -29,6 +29,7 @@ public class Constant {
         public static final String MESSAGE = "message";
         public static final String SEND_DATETIME = "sendDatetime";
         public static final String IS_SEEN = "isSeen";
+        public static final String TYPE = "type";
     }
 
     public static final class USER_TABLE_FIELD {
@@ -85,5 +86,10 @@ public class Constant {
         public static final int STORAGE_REQUEST_CODE = 200;
         public static final int IMAGE_PICK_GALLERY_CODE = 300;
         public static final int IMAGE_PICK_CAMERA_CODE = 400;
+    }
+
+    public static final class MESSAGE_TYPE {
+        public static final String IMAGE = "image";
+        public static final String TEXT = "text";
     }
 }

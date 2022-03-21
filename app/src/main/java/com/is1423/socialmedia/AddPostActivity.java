@@ -234,7 +234,7 @@ public class AddPostActivity extends AppCompatActivity {
                             while (!uriTask.isSuccessful()) ;
                             String downloadUri = uriTask.getResult().toString();
                             if (uriTask.isSuccessful()) {
-                                savePost(now, title, description,downloadUri);
+                                savePost(now, title, description, downloadUri);
                             }
                         }
                     })
@@ -250,7 +250,7 @@ public class AddPostActivity extends AppCompatActivity {
         }
     }
 
-    private void savePost(String now, String title, String description, String downloadUri){
+    private void savePost(String now, String title, String description, String downloadUri) {
         Map<Object, String> map = new HashMap<>();
         map.put(Constant.POSTING_TABLE_FIELD.UID, uid);
         map.put(Constant.POSTING_TABLE_FIELD.USER_NAME, name);
@@ -272,7 +272,7 @@ public class AddPostActivity extends AppCompatActivity {
                         titleEt.setText("");
                         descriptionEt.setText("");
                         imageIv.setImageURI(null);
-                        image_uri=null;
+                        image_uri = null;
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -316,24 +316,6 @@ public class AddPostActivity extends AppCompatActivity {
         }
     };
 
-    private void pickFromGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, Constant.REQUEST_CODE.IMAGE_PICK_GALLERY_CODE);
-    }
-
-    private void pickFromCamera() {
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "Temp Pic");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "Temp Description");
-
-        image_uri = this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
-        startActivityForResult(cameraIntent, Constant.REQUEST_CODE.IMAGE_PICK_CAMERA_CODE);
-    }
-
     private boolean checkStoragePermission() {
         return ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
@@ -350,6 +332,24 @@ public class AddPostActivity extends AppCompatActivity {
 
     private void requestCameraPermission() {
         ActivityCompat.requestPermissions(this, cameraPermissions, Constant.REQUEST_CODE.CAMERA_REQUEST_CODE);
+    }
+
+    private void pickFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, Constant.REQUEST_CODE.IMAGE_PICK_GALLERY_CODE);
+    }
+
+    private void pickFromCamera() {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "Temp Pic");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Temp Description");
+
+        image_uri = this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
+        startActivityForResult(cameraIntent, Constant.REQUEST_CODE.IMAGE_PICK_CAMERA_CODE);
     }
 
     @Override
