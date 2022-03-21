@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.is1423.socialmedia.MessageActivity;
 import com.is1423.socialmedia.R;
 import com.is1423.socialmedia.common.Constant;
 import com.is1423.socialmedia.domain.MessageList;
@@ -71,7 +72,7 @@ public class AdapterMessageList extends RecyclerView.Adapter<AdapterMessageList.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, MessageList.class);
+                Intent intent = new Intent(context, MessageActivity.class);
                 intent.putExtra(Constant.COMMON_KEY.PARTNER_UID_KEY, partnerUid);
                 context.startActivity(intent);
             }
