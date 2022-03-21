@@ -92,4 +92,12 @@ public class Constant {
         public static final String IMAGE = "image";
         public static final String TEXT = "text";
     }
+
+    public static final class EDIT_PROFILE_OPTION {
+        public static final String CHANGE_PROFILE_PHOTO = "Edit Profile Photo";
+        public static final String CHANGE_COVER_PHOTO = "Edit Cover Photo";
+        public static final String EDIT_NAME = "Edit Name";
+        public static final String EDIT_PHONE_NUMBER = "Edit Phone Number";
+        public static final String CHANGE_PASSWORD = "Change Password";
+    }
 }

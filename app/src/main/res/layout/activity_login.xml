@@ -18,7 +18,6 @@
         android:textSize="25sp" />
 
     //EditText: Input Email
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailTIL"
         android:layout_width="match_parent"
@@ -35,7 +34,6 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     //EditText: Input Password
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordTIL"
         android:layout_width="match_parent"
@@ -54,7 +52,6 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     //Button: Register
-
     <Button
         android:id="@+id/loginBtn"
         style="@style/Widget.AppCompat.Button.Colored"
