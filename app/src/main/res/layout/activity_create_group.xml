@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/background_gray"
+    tools:context=".CreateGroupActivity">
+
+    <!--ImageView: Group icon image-->
+    <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+        android:id="@+id/groupIconCiv"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_group_primary" />
+
+    <!--EditText: Group title-->
+    <EditText
+        android:id="@+id/groupTitleEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/groupIconCiv"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:hint="@string/group_title"
+        android:padding="10dp" />
+
+    <!--EditText: Group Description-->
+    <EditText
+        android:id="@+id/groupDescriptionEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/groupTitleEt"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:hint="@string/group_description"
+        android:inputType="textMultiLine|textCapSentences"
+        android:minHeight="100dp"
+        android:padding="10dp"
+        android:gravity="top"/>
+
+    <!--FAB: Create Group-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/createGroupBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/primary_dark"
+        android:src="@drawable/ic_done_white"/>
+</RelativeLayout>

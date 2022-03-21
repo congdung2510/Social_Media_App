@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.is1423.socialmedia.CreateGroupActivity;
 import com.is1423.socialmedia.MainActivity;
 import com.is1423.socialmedia.R;
 import com.is1423.socialmedia.adapter.AdapterMessageList;
@@ -103,6 +104,8 @@ public class MessageListFragment extends Fragment {
             firebaseAuth.signOut();
             checkUserStatus();
             updateOnlineStatus(Constant.USER_STATUS.OFFLINE);
+        }else if(id==R.id.action_create_group){
+            startActivity(new Intent(getActivity(), CreateGroupActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

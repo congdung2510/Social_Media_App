@@ -24,4 +24,6 @@
     <string name="update_password">Update Password</string>
     <string name="current_password">Current Password</string>
     <string name="new_password">New Password</string>
+    <string name="group_title">Group Title</string>
+    <string name="group_description">Group Description</string>
 </resources>

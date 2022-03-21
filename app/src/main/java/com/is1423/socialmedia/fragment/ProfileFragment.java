@@ -50,6 +50,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.is1423.socialmedia.AddPostActivity;
+import com.is1423.socialmedia.CreateGroupActivity;
 import com.is1423.socialmedia.MainActivity;
 import com.is1423.socialmedia.R;
 import com.is1423.socialmedia.common.Constant;
@@ -537,41 +538,8 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         //inflating menu
         menuInflater.inflate(R.menu.menu_main, menu);
+        menu.findItem(R.id.action_create_group).setVisible(false);
+        menu.findItem(R.id.action_logout).setVisible(false);
         super.onCreateOptionsMenu(menu, menuInflater);
-    }
-
-    /*handle menu item clicks*/
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //get item id
-        int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            firebaseAuth.signOut();
-            checkUserStatus();
-            updateOnlineStatus(Constant.USER_STATUS.OFFLINE);
-        }
-        if (id == R.id.action_add_post) {
-            startActivity(new Intent(getActivity(), AddPostActivity.class));
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void checkUserStatus() {
-        //get current user
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        if (user != null) {
-            //user signed in => stay here
-        } else {
-            //user not signed in, go main
-            startActivity(new Intent(getActivity(), MainActivity.class));
-            getActivity().finish();
-        }
-    }
-
-    private void updateOnlineStatus(String status) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constant.TABLE.USER).child(user.getUid());
-        Map<String, Object> map = new HashMap<>();
-        map.put(Constant.USER_TABLE_FIELD.ONLINE_STATUS, status);
-        reference.updateChildren(map);
     }
 }

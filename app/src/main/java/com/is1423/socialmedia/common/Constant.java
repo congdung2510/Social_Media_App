@@ -12,6 +12,7 @@ public class Constant {
         public static final String TOKEN = "Token";
         public static final String POST = "Post";
         public static final String MESSAGE_LIST = "MessageList";
+        public static final String GROUP = "Group";
     }
 
     public static final class USER_STATUS {
@@ -58,6 +59,22 @@ public class Constant {
         public static final String ID = "id";
     }
 
+    public static final class GROUP_TABLE_FIELD {
+        public static final String ID = "id";
+        public static final String TITLE = "title";
+        public static final String DESCRIPTION = "description";
+        public static final String ICON = "icon";
+        public static final String CREATED_BY = "created_by";
+        public static final String CREATED_DATETIME = "created_datetime";
+        public static final String PARTICIPANTS = "participants";
+    }
+
+    public static final class PARTICIPANTS_FIELD {
+        public static final String UID = "uid";
+        public static final String ROLE = "role";
+        public static final String JOIN_TIME = "joinTime";
+    }
+
     public static final class COMMON_KEY {
         public static final String SHARED_PREFERENCES_SP_USER_NAME = "SP_USER";
         public static final String SHARED_PREFERENCES_CURRENT_USERID_KEY = "Current_USERID";
@@ -100,4 +117,9 @@ public class Constant {
         public static final String EDIT_PHONE_NUMBER = "Edit Phone Number";
         public static final String CHANGE_PASSWORD = "Change Password";
     }
+
+    public static final class GROUP_MEMBER_ROLE {
+        public static final String CREATOR = "creator";
+    }
+
 }
