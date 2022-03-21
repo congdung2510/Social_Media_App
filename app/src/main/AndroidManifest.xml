@@ -34,6 +34,9 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".CallActivity"
+            android:exported="false" />
+        <activity
             android:name=".DashboardActivity"
             android:exported="false"></activity>
         <activity
@@ -57,5 +60,5 @@
             </intent-filter>
         </service>
     </application>
-
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 </manifest>
