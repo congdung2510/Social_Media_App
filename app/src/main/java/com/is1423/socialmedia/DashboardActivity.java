@@ -26,12 +26,15 @@ import com.is1423.socialmedia.fragment.ProfileFragment;
 import com.is1423.socialmedia.fragment.UsersFragment;
 import com.is1423.socialmedia.notifications.Token;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class DashboardActivity extends AppCompatActivity {
 
     //firebase auth
     FirebaseAuth firebaseAuth;
+    FirebaseUser currentUser;
 
     //views
     BottomNavigationView bottomNavigationView;
@@ -51,6 +54,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         //init
         firebaseAuth = FirebaseAuth.getInstance();
+        currentUser = firebaseAuth.getCurrentUser();
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(onItemSelectedListener);
 
@@ -62,6 +66,7 @@ public class DashboardActivity extends AppCompatActivity {
         homeFt.commit();
 
         checkUserStatus();
+        updateOnlineStatus(Constant.USER_STATUS.ONLINE);
 
         Task<String> token = FirebaseMessaging.getInstance().getToken();
         token
@@ -147,6 +152,14 @@ public class DashboardActivity extends AppCompatActivity {
             startActivity(new Intent(DashboardActivity.this, MainActivity.class));
             finish();
         }
+    }
+
+    private void updateOnlineStatus(String status) {
+        String uid = currentUser.getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constant.TABLE.USER).child(uid);
+        Map<String, Object> map = new HashMap<>();
+        map.put(Constant.USER_TABLE_FIELD.ONLINE_STATUS, status);
+        reference.updateChildren(map);
     }
 
     @Override

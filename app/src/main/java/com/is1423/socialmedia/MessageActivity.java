@@ -51,8 +51,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 public class MessageActivity extends AppCompatActivity {
-    //view from xml
-    Toolbar toolbar;
+
+    //views
     RecyclerView recyclerView;
     ImageView profileCiv;
     TextView nameTv, userStatusTv;
@@ -60,13 +60,12 @@ public class MessageActivity extends AppCompatActivity {
     ImageButton sendBtn;
 
     FirebaseAuth firebaseAuth;
-
     FirebaseDatabase firebaseDatabase;
     DatabaseReference userDbRef;
+    DatabaseReference userRefForSeen;
 
     //for checking if user has seen message or not
     ValueEventListener seenListener;
-    DatabaseReference userRefForSeen;
 
     List<Message> messageList;
     AdapterMessage adapterMessage;
@@ -88,6 +87,7 @@ public class MessageActivity extends AppCompatActivity {
         //Layout for RecyclerView
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
+
         //recyclerview properties
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -150,6 +150,47 @@ public class MessageActivity extends AppCompatActivity {
 
         readMessage();
         seenMessage();
+    }
+
+    @Override
+    protected void onStart() {
+        checkUserStatus();
+        updateOnlineStatus(Constant.USER_STATUS.ONLINE);
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        updateOnlineStatus(Constant.USER_STATUS.OFFLINE);
+        userRefForSeen.removeEventListener(seenListener);
+
+    }
+
+    @Override
+    protected void onResume() {
+        updateOnlineStatus(Constant.USER_STATUS.ONLINE);
+        super.onResume();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //hide searchview
+        menu.findItem(R.id.action_search).setVisible(false);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //get item id
+        int id = item.getItemId();
+        if (id == R.id.action_logout) {
+            firebaseAuth.signOut();
+            checkUserStatus();
+            updateOnlineStatus(Constant.USER_STATUS.OFFLINE);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void seenMessage() {
@@ -230,6 +271,41 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
+
+        DatabaseReference messageListDbRef = FirebaseDatabase.getInstance().getReference(Constant.TABLE.MESSAGE_LIST)
+                .child(currentUserUid)
+                .child(partnerUid);
+        messageListDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    messageListDbRef.child(Constant.MESSAGE_LIST_TABLE_FIELD.ID).setValue(partnerUid);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        DatabaseReference messageListDbRef2 = FirebaseDatabase.getInstance().getReference(Constant.TABLE.MESSAGE_LIST)
+                .child(partnerUid)
+                .child(currentUserUid);
+
+        messageListDbRef2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    messageListDbRef2.child(Constant.MESSAGE_LIST_TABLE_FIELD.ID).setValue(currentUserUid);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void sendNotification(String partnerUid, String name, String message) {
@@ -277,27 +353,6 @@ public class MessageActivity extends AppCompatActivity {
         sendBtn = findViewById(R.id.sendBtn);
     }
 
-    @Override
-    protected void onStart() {
-        checkUserStatus();
-        updateOnlineStatus(Constant.USER_STATUS.ONLINE);
-        super.onStart();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        updateOnlineStatus(Constant.USER_STATUS.OFFLINE);
-        userRefForSeen.removeEventListener(seenListener);
-
-    }
-
-    @Override
-    protected void onResume() {
-        updateOnlineStatus(Constant.USER_STATUS.ONLINE);
-        super.onResume();
-    }
-
     private void checkUserStatus() {
         //get current user
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -309,26 +364,6 @@ public class MessageActivity extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        //hide searchview
-        menu.findItem(R.id.action_search).setVisible(false);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //get item id
-        int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            firebaseAuth.signOut();
-            checkUserStatus();
-            updateOnlineStatus(Constant.USER_STATUS.OFFLINE);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void updateOnlineStatus(String status) {

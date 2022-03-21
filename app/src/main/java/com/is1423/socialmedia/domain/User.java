@@ -1,18 +1,19 @@
 package com.is1423.socialmedia.domain;
 
 public class User {
-    String name, email, phone, image, cover, uid;
+    String name, email, phone, image, cover, uid, onlineStatus;
 
     public User() {
     }
 
-    public User(String name, String email, String phone, String image, String cover, String uid) {
+    public User(String name, String email, String phone, String image, String cover, String uid, String onlineStatus) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.image = image;
         this.cover = cover;
         this.uid = uid;
+        this.onlineStatus = onlineStatus;
     }
 
     public String getName() {
@@ -61,5 +62,13 @@ public class User {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getOnlineStatus() {
+        return onlineStatus;
+    }
+
+    public void setOnlineStatus(String onlineStatus) {
+        this.onlineStatus = onlineStatus;
     }
 }

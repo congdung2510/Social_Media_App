@@ -11,6 +11,7 @@ public class Constant {
         public static final String MESSAGE = "Message";
         public static final String TOKEN = "Token";
         public static final String POST = "Post";
+        public static final String MESSAGE_LIST = "MessageList";
     }
 
     public static final class USER_STATUS {
@@ -50,6 +51,10 @@ public class Constant {
         public static final String DESCRIPTION = "post_description";
         public static final String POST_IMAGE = "post_image";
         public static final String POST_DATETIME = "post_datetime";
+    }
+
+    public static final class MESSAGE_LIST_TABLE_FIELD {
+        public static final String ID = "id";
     }
 
     public static final class COMMON_KEY {
